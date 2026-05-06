@@ -30,7 +30,9 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
       - name: Install Tools
-        run: pip install pylint black isort markdownlint-cli
+        run: |
+          python -m pip install --upgrade pip setuptools wheel
+          pip install pylint black isort markdownlint-cli requests
       - name: Run Analysis
         id: analysis
         continue-on-error: true
