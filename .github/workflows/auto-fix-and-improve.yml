@@ -32,7 +32,7 @@ jobs:
       - name: Install Tools
         run: |
           python -m pip install --upgrade pip setuptools wheel
-          pip install pylint black isort markdownlint-cli requests
+          pip install pylint black isort requests
       - name: Run Analysis
         id: analysis
         continue-on-error: true
