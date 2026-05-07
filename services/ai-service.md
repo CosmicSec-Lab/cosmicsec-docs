@@ -561,8 +561,9 @@ AI_SERVICE_PORT=8003
 AI_SERVICE_HOST=0.0.0.0
 
 # AI Providers
-OPENAI_API_KEY=sk-...
-ANTHROPIC_API_KEY=sk-ant-...
+OPENAI_API_KEY=sk-...         # optional: OpenAI key
+# Optional Anthropic key (only if you want to use Claude models)
+ANTHROPIC_API_KEY=sk-ant-...  # optional
 OLLAMA_URL=http://ollama:11434
 
 # Models
