@@ -1,49 +1,54 @@
-# CosmicSec CLI Plugins
+# CLI Plugins#
 
-## Plugin directory layout
+**Extending CLI** — plugins architecture.
 
-Plugins are stored in:
+## Overview#
 
-```text
-~/.cosmicsec/plugins/<plugin-name>/
+Extend CosmicSec CLI with custom plugins.
+
+## Plugin Types#
+
+- **Parser plugins** — custom tool output parsers#
+- **Command plugins** — add new CLI commands#
+- **Auth plugins** — custom authentication methods#
+- **Output plugins** — custom output formats#
+
+## Creating a Plugin#
+
+```python#
+# my_plugin.py#
+from cosmicsec_cli import BasePlugin#
+
+class MyPlugin(BasePlugin):
+    name = "my-plugin"#
+    version = "1.0.0"#
+
+    def execute(self, args):
+        print(f"Executing my plugin with {args}"#
 ```
 
-Each plugin scaffold contains:
+## Installing Plugins#
 
-- `plugin.yaml`
-- `__init__.py`
-- `commands.py`
-- `parser.py`
+```bash#
+# Install from file#
+cosmicsec plugins install --file my_plugin.py#
 
-## Create a plugin
+# Install from directory#
+cosmicsec plugins install --dir ~/cosmicsec-plugins#
 
-```bash
-cosmicsec-agent plugin create my-custom-plugin --author "Your Name"
+# List installed plugins#
+cosmicsec plugins list#
 ```
 
-## Install from local path
+## Plugin Configuration#
 
-```bash
-cosmicsec-agent plugin install ./my-custom-plugin
-```
+Environment variables:
+- `PLUGINS_DIR` — plugins directory (default: `~/.cosmicsec/plugins`)#
+- `PLUGINS_ENABLED` — enable plugins (default: `true`)#
 
-## Install from GitHub shorthand
+## Built-in Plugins#
 
-```bash
-# owner/repo on default branch
-cosmicsec-agent plugin install gh:owner/repo
-
-# specific branch or tag
-cosmicsec-agent plugin install gh:owner/repo@main
-```
-
-## Manage plugins
-
-```bash
-cosmicsec-agent plugin list
-cosmicsec-agent plugin info my-custom-plugin
-cosmicsec-agent plugin disable my-custom-plugin
-cosmicsec-agent plugin enable my-custom-plugin
-cosmicsec-agent plugin search custom
-cosmicsec-agent plugin remove my-custom-plugin
-```
+- **Nmap parser** — parse Nmap XML#
+- **Nuclei parser** — parse Nuclei JSON#
+- **AI analyzer** — AI-powered analysis#
+- **Report generator** — custom report formats#
