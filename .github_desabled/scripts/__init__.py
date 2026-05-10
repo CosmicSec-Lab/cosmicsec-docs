@@ -1,1 +1,0 @@
-# GitHub Actions scripts for CosmicSec Docs
