@@ -1,13 +1,32 @@
+# Generated docs output — never commit
+site/
+_build/
+.docusaurus/
+.cache/
+
+# Node / frontend tools
 node_modules/
+dist/
+build/
+
+# OS
 .DS_Store
+Thumbs.db
+
+# Env & Secrets
 .env
 .env.*
+!.env.example
+
+# Logs
 *.log
-build/
-dist/
+
+# IDE
 .vscode/
 .idea/
-.venv/
-venv/
+
+# Python (if any tooling scripts)
 __pycache__/
 *.py[cod]
+.venv/
+venv/
