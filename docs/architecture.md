@@ -43,7 +43,78 @@ The architecture supports multiple operation modes:
 
 ---
 
+## Inter-Repo Wiring (Proposed Standard)
+
+CosmicSec stays split into **9 repositories** but exposes a unified platform through a single **Edge → Gateway → Mesh** pipeline:
+
+1. **Edge** (Traefik) terminates TLS and applies coarse rate limiting.
+2. **API Gateway** (cosmicsec-core) applies auth, tenant isolation, and route policy.
+3. **Service Mesh** routes traffic to dedicated services (cosmicsec-services, cosmicsec-ai, cosmicsec-deepintel).
+4. **Clients** (cosmicsec-web + cosmicsec-cli + cosmicsec-sdk) consume versioned API + WebSocket channels.
+
+### Gateway Topology (Logical)
+
+```mermaid
+flowchart LR
+	User((User)) --> Web[cosmicsec-web]
+	User --> CLI[cosmicsec-cli]
+	Web --> Edge[Traefik Edge]
+	CLI --> Edge
+	Edge --> GW[API Gateway]
+
+	GW --> Auth[Auth Service]
+	GW --> Scan[Scan Service]
+	GW --> AI[AI Service]
+	GW --> Recon[Recon Service]
+	GW --> Report[Report Service]
+	GW --> Collab[Collab Service]
+	GW --> Relay[Agent Relay]
+	GW --> Notify[Notification Service]
+
+	AI --> DeepIntel[cosmicsec-deepintel]
+	GW --> SDK[cosmicsec-sdk]
+
+	subgraph Data
+		PG[(PostgreSQL)]
+		Redis[(Redis)]
+		Mongo[(MongoDB)]
+		ES[(Elasticsearch)]
+	end
+	Auth --> PG
+	Scan --> PG
+	AI --> Mongo
+	Recon --> Mongo
+	Report --> PG
+	Collab --> Redis
+	Relay --> Redis
+	Notify --> Redis
+	Scan --> ES
+	AI --> ES
+```
+
+### Service Contracts (Proposed Standard)
+- **HTTP**: Versioned routes: `/api/v1/...`, `/api/v2/...`
+- **WebSocket**: `/ws/v1/...` (events, agent relay, collaboration)
+- **Async Events**: Internal event bus (Redis Streams or NATS) with `events.<domain>.*` topics.
+- **Observability**: OpenTelemetry traces + structured logs with `trace_id` and `tenant_id`.
+
+### Standard Route Groups
+- `/api/v1/auth/*`
+- `/api/v1/scan/*`
+- `/api/v1/ai/*`
+- `/api/v1/recon/*`
+- `/api/v1/report/*`
+- `/api/v1/collab/*`
+- `/api/v1/agents/*`
+- `/api/v1/notify/*`
+
+---
+
+---
+
 ## Scope Note
 
 This file is architecture context only.
 Implementation status, completion percentages, and active gap tracking are maintained in `report.md`, `ROADMAP.md`, and `gap_analysis.md`.
+
+See `gateway-routing.md` for the unified routing blueprint.
