@@ -1,103 +1,60 @@
-# CosmicSec-Lab
+# 🌌 CosmicSec Documentation Platform
 
-**Enterprise Security Operations Platform** - AI-powered, full-stack security suite with autonomous threat hunting, vulnerability scanning, and real-time collaboration.
+**The Enterprise-Grade Cybersecurity Operations Ecosystem.**
 
-```
-CosmicSec-Lab/
-├── cosmicsec-core/        # API Gateway, common libs
-├── cosmicsec-services/    # Backend microservices
-├── cosmicsec-ai/          # Helix AI Engine
-├── cosmicsec-deepintel/   # DeepIntel PRO (Dark web OSINT)
-├── cosmicsec-web/         # React Frontend
-├── cosmicsec-cli/         # CLI Agent
-├── cosmicsec-sdk/         # Python & TypeScript SDK
-├── cosmicsec-deploy/      # Docker/K8s configs
-└── cosmicsec-docs/        # Documentation
-```
+Welcome to the official documentation for the CosmicSec Platform. This ecosystem provides a comprehensive, AI-powered suite for autonomous threat hunting, vulnerability management, and dark web intelligence.
 
-## Platform Overview
+---
 
-| Component | Technology | Purpose |
-|-----------|------------|---------|
-| **Frontend** | React 19, TypeScript, Next.js | Glassmorphism UI, real-time dashboards |
-| **Backend** | FastAPI, Python 3.11+ | Microservices, REST/GraphQL |
-| **AI Engine** | LangChain, LangGraph, Multi-model LLM | Autonomous agents, threat analysis |
-| **Dark Web OSINT** | Tor/I2P/IPFS networks | DarkNet monitoring, ransomware tracking |
-| **Data Stores** | PostgreSQL, Redis, MongoDB, Elasticsearch, Kafka | Primary DB, caching, search, events |
-| **CLI Agent** | Hybrid AI Engine | Natural language security operations |
+## 🚀 The 9-Module Ecosystem
 
-## 9 Core Modules
+CosmicSec is built on a modular, microservices-driven architecture designed for scalability, resilience, and high-performance security operations.
 
-### 1. cosmicsec-core
-API Gateway with FastAPI, GraphQL federation, circuit breakers, rate limiting, JWT auth, RBAC system.
+| Module | Purpose | Key Technologies |
+| :--- | :--- | :--- |
+| **[AI Helix](./docs/modules/ai-helix/)** | Autonomous AI Engine | LangGraph, Multi-model LLM, RAG |
+| **[CLI Agent](./docs/modules/cli-agent/)** | Natural Language SecOps | Python, Hybrid Execution Engine |
+| **[Core Platform](./docs/modules/core-platform/)** | API Gateway & Infrastructure | FastAPI, GraphQL, mTLS, RBAC |
+| **[DeepIntel OSINT](./docs/modules/deepintel-osint/)** | Dark Web Intelligence | Tor, I2P, IPFS, Ransomware Tracker |
+| **[Deployment](./docs/modules/deployment-infra/)** | Cloud-Native Infrastructure | Docker, Kubernetes, CI/CD |
+| **[SDK Integration](./docs/modules/sdk-integration/)** | Multi-Language SDKs | Python, TypeScript |
+| **[Services Backend](./docs/modules/services-backend/)** | Core Microservices | Auth, Scan, SOC, Collab |
+| **[Web Frontend](./docs/modules/web-frontend/)** | Real-time Dashboard | React 19, Three.js, Glassmorphism |
+| **[Documentation](./docs/)** | This Repository | Markdown, Doc-as-Code |
 
-### 2. cosmicsec-services
-Backend microservices: Auth, Scan, AI, Recon, Collab, Bug Bounty, SOC, Relay services.
+---
 
-### 3. cosmicsec-ai (Helix)
-AI engine with multi-model LLM (OpenAI, Anthropic, Ollama), LangGraph agents, autonomous security operations.
+## 🏗️ Architecture & Security
 
-### 4. cosmicsec-deepintel (DeepIntel PRO)
-Dark web intelligence: Tor/I2P/IPFS monitoring, ransomware tracker, honeypot monitors, STIX/TAXII client.
+CosmicSec is engineered with a "Security-First" philosophy, incorporating modern architectural patterns:
 
-### 5. cosmicsec-web
-React frontend with Next.js, Zustand state, WebSocket real-time collaboration, 3D attack path visualization.
+*   **[Architecture Overview](./docs/architecture/overview.md)**: High-level system design and component interaction.
+*   **[Zero-Trust Model](./docs/architecture/security-model.md)**: mTLS, continuous authentication, and device posture checks.
+*   **[Quantum-Ready Cryptography](./docs/architecture/security-model.md#quantum-crypto)**: Kyber and Dilithium post-quantum algorithms.
+*   **[Multi-Layer Data Flow](./docs/architecture/data-flow.md)**: High-throughput event streaming with Kafka and tiered caching.
+*   **[Telemetry & Observability](./docs/architecture/telemetry.md)**: Advanced distributed tracing and structured logging.
 
-### 6. cosmicsec-cli
-CLI agent with hybrid execution engine, natural language security operations, 17+ security tool parsers.
+---
 
-### 7. cosmicsec-sdk
-Python & TypeScript SDK libraries with Pydantic/Zod validation for easy integration.
+## 🛠️ Getting Started
 
-### 8. cosmicsec-deploy
-Docker Compose, Kubernetes manifests, CI/CD with GitHub Actions, multi-zone deployment.
+Whether you are a security analyst, developer, or system administrator, our guides will help you get up and running quickly.
 
-### 9. cosmicsec-docs
-Complete project documentation with architecture diagrams, API references, and deployment guides.
+*   **[Quick Start Guide](./docs/guides/quick-start.md)**: Deploy the entire ecosystem in minutes.
+*   **[Developer Onboarding](./docs/guides/developer-onboarding.md)**: Learn how to contribute and extend the platform.
+*   **[Self-Hosting Guide](./docs/guides/self-hosting.md)**: Configure CosmicSec for your private infrastructure.
+*   **[API Reference](./docs/api-reference/)**: Detailed REST, GraphQL, and WebSocket documentation.
 
-## Quick Start
+---
 
-```bash
-# Clone and setup
-git clone https://github.com/your-org/cosmicsec-lab.git
-cd cosmicsec-lab
+## 🤝 Community & Support
 
-# Start with Docker Compose
-docker-compose up -d
+*   **[Contribution Guidelines](./docs/community/contribution.md)**: Join our mission to secure the future.
+*   **[Security Roadmap](./docs/community/roadmap.md)**: View our upcoming features and vision.
+*   **[FAQ & Troubleshooting](./docs/resources/faq.md)**: Common questions and resolution steps.
 
-# Or use CLI
-pip install cosmicsec-cli
-cosmicsec --help
-```
+---
 
-## Key Features
+## 📄 License
 
-| Feature | Description |
-|---------|-------------|
-| **Autonomous Agents** | LangGraph-powered agents for triage, analysis, correlation, remediation |
-| **Threat Hunting** | Real-time SOC dashboard, MITRE ATT&CK mapping, anomaly detection |
-| **Vulnerability Scanning** | SAST/DAST/SCA, integration with 17+ security tools |
-| **Dark Web Intelligence** | Tor/I2P/IPFS networks, ransomware tracking, threat actor attribution |
-| **Zero-Trust Security** | mTLS, continuous auth, RBAC, SSO (SAML/OIDC) |
-| **Quantum-Ready Crypto** | Kyber/Dilithium post-quantum algorithms |
-| **Multi-Level Caching** | L1 (in-memory) + L2 (Redis) tiered caching |
-| **3D Visualization** | Three.js attack path visualization |
-
-## Architecture Highlights
-
-- **API Gateway**: REST + GraphQL federation, circuit breaker (10 failures/60s), rate limiting
-- **Data Layer**: PostgreSQL (primary), Redis (cache), Elasticsearch (search), Kafka (events)
-- **Security**: Zero-trust model, mTLS, RBAC (8 roles, 20+ permissions)
-- **AI**: Multi-model ensemble (GPT-4o, Claude 3 Opus, Llama 3.1, Ollama)
-
-## Resource Links
-
-- [Architecture Overview](./docs/architecture/overview.md)
-- [API Gateway](./docs/architecture/gateway.md)
-- [Services Documentation](./docs/services/)
-- [Security & RBAC](./docs/security/)
-- [Deployment Guide](./docs/deployment/)
-
-## License
-
-Proprietary - All rights reserved
+This project is licensed under the [LICENSE](./LICENSE) - All rights reserved. Proprietary Enterprise Platform.
