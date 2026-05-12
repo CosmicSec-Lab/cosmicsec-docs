@@ -1,10 +1,10 @@
-# 🏗️ Architecture Overview
+# Architecture Overview
 
-## System Architecture
+## System Design
 
-CosmicSec uses a **microservices architecture** with 25+ independent services communicating via REST APIs, GraphQL Federation, gRPC, and WebSockets.
+CosmicSec-Lab is an **enterprise security operations platform** with 9 core modules, built on microservices architecture.
 
-## High-Level Architecture
+## Core Modules
 
 ```
 ┌─────────────────────────────────────────────────────────────────────┐
@@ -14,258 +14,148 @@ CosmicSec uses a **microservices architecture** with 25+ independent services co
                                ▼
 ┌─────────────────────────────────────────────────────────────────────┐
 │                   cosmicsec-web (Frontend)                          │
-│         React 19 + TypeScript 5.5 + Glassmorphism UI                │
-│         Port: 3000                                                  │
+│         React 19 + TypeScript + Glassmorphism UI                    │
 └──────────────────────────────┬──────────────────────────────────────┘
                                │
                                ▼
 ┌─────────────────────────────────────────────────────────────────────┐
-│              API Gateway (Port 8000) - Hybrid Router                │
-│   • REST + GraphQL Federation                                       │
-│   • Circuit Breakers (10 failures/60s)                              │
-│   • Rate Limiting (100-2000 req/min per service)                    │
-│   • Service Discovery                                               │
-│   • Request Routing & Load Balancing                                │
+│              cosmicsec-core (API Gateway)                            │
+│         FastAPI + GraphQL Federation + mTLS                          │
 └─────────────┬──────────────┬──────────────┬──────────────┬─────────┘
               │              │              │              │
               ▼              ▼              ▼              ▼
-    ┌─────────────┐ ┌─────────────┐ ┌─────────────┐ ┌─────────────┐
-    │ Auth Service│ │ Scan Service│ │  AI Service │ │Recon Service│
-    │  Port: 8001 │ │  Port: 8002 │ │  Port: 8003 │ │  Port: 8004 │
-    └─────────────┘ └─────────────┘ └─────────────┘ └─────────────┘
-              │              │              │              │
-              ▼              ▼              ▼              ▼
-    ┌─────────────┐ ┌─────────────┐ ┌─────────────┐ ┌─────────────┐
-    │Report Service│ │Collab Service│ │BugBounty Svc│ │Phase5/OpHub │
-    │  Port: 8005 │ │  Port: 8006 │ │  Port: 8007 │ │  Port: 8010 │
-    └─────────────┘ └─────────────┘ └─────────────┘ └─────────────┘
-              │              │              │              │
-              ▼              ▼              ▼              ▼
-    ┌─────────────┐ ┌─────────────┐ ┌─────────────┐ ┌─────────────┐
-    │IoT/OT Sec   │ │DDoS Protect │ │    ZTNA     │ │Threat Intel │
-    │  Port: 8020 │ │  Port: 8021 │ │  Port: 8022 │ │  Port: 8023 │
-    └─────────────┘ └─────────────┘ └─────────────┘ └─────────────┘
-              │              │              │              │
-              ▼              ▼              ▼              ▼
-    ┌─────────────┐ ┌─────────────┐ ┌─────────────┐ ┌─────────────┐
-    │Smart Contract│ │3D Visualize│ │Breach Sim   │ │Edge Computing│
-    │  Port: 8024 │ │  Port: 8025 │ │  Port: 8026 │ │  Port: 8027 │
-    └─────────────┘ └─────────────┘ └─────────────┘ └─────────────┘
-              │              │              │              │
-              ▼              ▼              ▼              ▼
-    ┌─────────────┐ ┌─────────────┐ ┌─────────────┐ ┌─────────────┐
-    │ SLA Manager │ │Theme Builder│ │Onboard Wizrd│ │ NLP Search  │
-    │  Port: 8028 │ │  Port: 8029 │ │  Port: 8030 │ │  Port: 8031 │
-    └─────────────┘ └─────────────┘ └─────────────┘ └─────────────┘
-              │              │              │
-              ▼              ▼              ▼
-    ┌─────────────┐ ┌─────────────┐ ┌─────────────┐
-    │Notification │ │Compliance   │ │  Org Service│
-    │  Port: 8011 │ │  Port: 8012 │ │  Port: 8013 │
-    └─────────────┘ └─────────────┘ └─────────────┘
-              │              │              │
-              ▼              ▼              ▼
-    ┌─────────────┐ ┌─────────────┐ ┌─────────────┐
-    │Admin Service│ │Egress Service│ │Ingest Service│
-    │  Port: 8014 │ │  Port: 8015 │ │  Port: 8016 │
-    └─────────────┘ └─────────────┘ └─────────────┘
-                               │
-                               ▼
-        ┌──────────────────────────────────────────┐
-        │     DeepIntel PRO (Port 8032)          │
-        │  17+ Dark Web Networks Monitored        │
-        │  • Tor, I2P, IPFS, ZeroNet, Freenet   │
-        │  • GNUnet, Lokinet, Yggdrasil, etc.    │
-        └──────────────────────────────────────────┘
-                               │
-                               ▼
-        ┌──────────────────────────────────────────┐
-        │          Data Layer                       │
-        │  • PostgreSQL (Primary DB)               │
-        │  • Redis (Cache + Pub/Sub)               │
-        │  • Elasticsearch (Search + Logs)         │
-        │  • MinIO (Object Storage)                │
-        │  • Kafka (Event Streaming)               │
-        └──────────────────────────────────────────┘
+┌─────────────────┐ ┌─────────────────┐ ┌─────────────────┐ ┌─────────────────┐
+│  Auth Service   │ │  Scan Service   │ │    AI Service   │ │  Recon Service  │
+│ (JWT, RBAC)    │ │ (SAST/DAST)    │ │  (Helix/LLM)   │ │   (OSINT)      │
+└─────────────────┘ └─────────────────┘ └─────────────────┘ └─────────────────┘
 ```
 
-## Core Components
+## Module Breakdown
 
-### 1. Frontend (cosmicsec-web)
-- **Framework:** React 19 with TypeScript 5.5
-- **UI Design:** Glassmorphism with premium components
-- **State Management:** React Context + Hooks
-- **Routing:** React Router v7
-- **Charts:** Recharts + Three.js for 3D visualization
-- **Real-Time:** WebSocket client for live updates
-- **PWA:** Progressive Web App with offline support
-- **Responsive:** 320px → 4K display support
+### 1. cosmicsec-core
+- **API Gateway**: FastAPI + GraphQL federation
+- **Circuit Breaker**: 10 failures / 60s threshold
+- **Rate Limiting**: 100-2000 req/min per service
+- **RBAC System**: 8 roles, 20+ permissions
+- **Common Utilities**: Feature flags, rate limiters, circuit breakers
 
-### 2. API Gateway (cosmicsec-core)
-- **Framework:** FastAPI with hybrid REST + GraphQL
-- **GraphQL:** Strawberry GraphQL federation
-- **Service Discovery:** Dynamic service registry
-- **Circuit Breaker:** Prevents cascade failures
-- **Rate Limiting:** Per-service configurable limits
-- **Authentication:** JWT validation + RBAC enforcement
-- **Metrics:** Prometheus integration
-- **Health Checks:** `/health` endpoint on all services
+### 2. cosmicsec-services
+Backend microservices:
+- **Auth Service**: JWT + SSO (SAML/OIDC) + TOTP 2FA
+- **Scan Service**: SAST/DAST/SCA, integration with 17+ tools
+- **AI Service (Helix)**: Multi-model LLM + LangGraph agents
+- **Recon Service**: OSINT, subdomain enumeration, DNS recon
+- **Collab Service**: WebSocket real-time collaboration
+- **SOC Service**: Dashboard, threat hunting, MITRE ATT&CK
 
-### 3. Microservices (25+)
-Each service is:
-- **Independent:** Own codebase, dependencies, database
-- **Containerized:** Docker + Kubernetes ready
-- **Scalable:** Horizontal scaling via K8s
-- **Resilient:** Health checks, circuit breakers, retries
-- **Observable:** Metrics, logs, tracing
+### 3. cosmicsec-ai (Helix AI Engine)
+- **Multi-Model LLM**: GPT-4o, Claude 3 Opus, Llama 3.1, Ollama
+- **Autonomous Agents**: Triage, analysis, correlation, remediation
+- **LangGraph Pipeline**: Recon → Scan → Analyze → Report
+- **DefensiveAI**: Auto-remediation engine
+- **ZeroDayPredictor**: ML-based threat prediction
 
-### 4. Data Layer
-- **PostgreSQL:** Primary relational data
-- **Redis:** Caching + Pub/Sub for real-time
-- **Elasticsearch:** Full-text search + log aggregation
-- **MinIO:** S3-compatible object storage
-- **Kafka:** Event streaming for async processing
+### 4. cosmicsec-deepintel (DeepIntel PRO)
+- **Dark Web Networks**: Tor, I2P, IPFS, ZeroNet, Freenet
+- **Ransomware Tracker**: Group monitoring, victim tracking
+- **STIX/TAXII Client**: Threat intelligence feeds
+- **Honeypot Monitors**: Cowrie, Dionaea integration
+- **Messaging Crawlers**: Signal, Telegram, WhatsApp
 
-## Communication Patterns
+### 5. cosmicsec-web
+- **React 19** + TypeScript + Next.js
+- **Glassmorphism UI**: Premium design system
+- **Zustand State**: Centralized state management
+- **WebSocket**: Real-time collaboration
+- **3D Visualization**: Three.js attack path
 
-### REST APIs
-- Synchronous request/response
-- JSON payloads
-- OpenAPI/Swagger documentation
-- Used for: CRUD operations, queries
+### 6. cosmicsec-cli
+- **Hybrid Engine**: AI planner + deterministic executor
+- **17+ Tool Parsers**: Burpsuite, ffuf, gobuster, nmap, nuclei, etc.
+- **Interactive Mode**: Natural language security ops
+- **Autonomous Mode**: Local agent execution
 
-### GraphQL Federation
-- Unified schema across services
-- Single endpoint for complex queries
-- Reduces over-fetching
-- Used for: Dashboard data, aggregations
+### 7. cosmicsec-sdk
+- **Python SDK**: Pydantic models, async client
+- **TypeScript SDK**: Zod validation, WebSocket client
+- **Examples**: Scan creation, findings retrieval, agent invocation
 
-### gRPC
-- High-performance binary protocol
-- Used for: Ingest service (Rust ↔ Python)
-- Protocol buffers for schema definition
+### 8. cosmicsec-deploy
+- **Docker Compose**: Local development
+- **Kubernetes**: Multi-zone production
+- **CI/CD**: GitHub Actions, ArgoCD
+- **Observability**: Prometheus, Grafana, Jaeger
 
-### WebSockets
-- Bidirectional real-time communication
-- Used for: Collaborative SOC, live scan updates
-- Redis Pub/Sub for scaling
+### 9. cosmicsec-docs
+- **Architecture Diagrams**: System overview, data flow
+- **API References**: REST, GraphQL, WebSocket
+- **Service Documentation**: Auth, Scan, AI, Recon, Collab
+- **Security Guides**: RBAC, SSO, Zero-Trust, Quantum-ready
+- **Deployment Guides**: Docker, Kubernetes, CI/CD
 
-### Event Streaming (Kafka)
-- Async event propagation
-- Used for: Scan results, notifications, audit logs
-- Topic-based pub/sub
+## Data Architecture
+
+| Layer | Technology | Purpose |
+|-------|------------|---------|
+| **API Gateway** | FastAPI, GraphQL | Routing, auth, rate limiting |
+| **Services** | Python, FastAPI | Business logic |
+| **AI Engine** | LangChain, LangGraph | Autonomous operations |
+| **Data Stores** | PostgreSQL, Redis, MongoDB, Elasticsearch, Kafka | Primary DB, cache, search, events |
+| **Frontend** | React, TypeScript | User interface |
 
 ## Security Architecture
 
 ### Zero-Trust Model
-- **Never trust, always verify**
+- Never trust, always verify
 - mTLS between services
-- Device posture checks
 - Continuous authentication
+- Device posture checks
 
-### Authentication Flow
+### Authentication
 ```
 User → API Gateway → Auth Service → JWT Token → Subsequent Requests
 ```
 
-### RBAC System
-- 8 Roles: super_admin, admin, analyst, auditor, viewer, api_user, soc_analyst, threat_hunter
-- 20+ Permissions: scan:create, report:read, ai:use, etc.
-- SSO Integration: SAML 2.0, OIDC, OAuth2
+### RBAC Roles
+1. super_admin
+2. admin
+3. analyst
+4. auditor
+5. viewer
+6. api_user
+7. soc_analyst
+8. threat_hunter
 
 ### Quantum-Ready Cryptography
-- **Kyber (ML-KEM)** for key encapsulation
-- **Dilithium (ML-DSA)** for digital signatures
+- **Kyber (ML-KEM)**: Key encapsulation
+- **Dilithium (ML-DSA)**: Digital signatures
 - Hybrid classical + post-quantum schemes
 
-## Scalability
+## Key Features
 
-### Horizontal Scaling
-- Kubernetes Deployments with replica counts
-- HPA (Horizontal Pod Autoscaler) based on CPU/memory
-- Stateless services for easy scaling
+| Feature | Module | Description |
+|---------|--------|-------------|
+| **Autonomous Agents** | ai-service | LangGraph-powered triage/analysis/correlation |
+| **Threat Hunting** | soc-service | Real-time dashboard, MITRE ATT&CK |
+| **Vulnerability Scanning** | scan-service | SAST/DAST/SCA, 17+ tool integration |
+| **Dark Web Intelligence** | deepintel | Tor/I2P/IPFS, ransomware tracking |
+| **Multi-Level Caching** | core | L1 (in-memory) + L2 (Redis) |
+| **3D Attack Path** | web | Three.js visualization |
+| **Circuit Breakers** | core | Resilience patterns |
 
-### Caching Strategy
-- Redis for API response caching
-- CDN for static assets
-- Browser caching for frontend
+## Communication Patterns
 
-### Database Scaling
-- Read replicas for PostgreSQL
-- Sharding for large datasets
-- Connection pooling
+| Pattern | Protocol | Use Case |
+|---------|----------|----------|
+| **REST APIs** | HTTP/JSON | CRUD, queries |
+| **GraphQL** | GraphQL | Dashboard, aggregations |
+| **gRPC** | Protocol Buffers | Ingest service (Rust ↔ Python) |
+| **WebSockets** | WebSocket | Real-time collab, live scans |
+| **Kafka** | Event Streaming | Async events, audit logs |
 
-## Monitoring & Observability
+## Resource Links
 
-### Metrics (Prometheus)
-- Request rate, error rate, duration
-- Business metrics (scans, vulnerabilities)
-- System metrics (CPU, memory, disk)
-
-### Logging (ELK Stack)
-- Centralized log aggregation
-- Structured JSON logging
-- Log retention policies
-
-### Tracing (OpenTelemetry)
-- Distributed tracing across services
-- Jaeger for trace visualization
-- Performance bottleneck identification
-
-### Dashboards (Grafana)
-- 5+ pre-built dashboards
-- Service health overview
-- Security metrics
-- SLA compliance
-
-## Deployment Architecture
-
-### Development
-- Docker Compose with hot-reload
-- Local services with volume mounts
-- Mock external services
-
-### Staging
-- Kubernetes cluster (minimal)
-- Production-like environment
-- Integration testing
-
-### Production
-- Multi-zone Kubernetes cluster
-- High availability (3+ replicas)
-- Automated backups
-- Disaster recovery
-
-## Technology Stack Summary
-
-| Layer | Technology |
-|-------|------------|
-| **Frontend** | React 19, TypeScript 5.5, Vite, Tailwind CSS |
-| **Backend** | Python 3.11+, FastAPI, Uvicorn |
-| **AI** | OpenAI, Anthropic, LangChain, Ollama |
-| **Databases** | PostgreSQL, Redis, Elasticsearch, MinIO |
-| **Message Queue** | Kafka, Redis Pub/Sub |
-| **Container** | Docker, Kubernetes, Helm |
-| **CI/CD** | GitHub Actions, ArgoCD |
-| **Monitoring** | Prometheus, Grafana, Jaeger |
-| **Security** | JWT, mTLS, RBAC, SSO |
-| **Infrastructure** | Terraform, Pulumi, AWS/GCP/Azure |
-
-## Design Principles
-
-1. **Microservices First** — Independent deployability
-2. **API-First** — All functionality exposed via APIs
-3. **Security by Design** — Zero-trust, encryption everywhere
-4. **Observability** — Metrics, logs, traces for everything
-5. **Scalability** — Horizontal scaling, stateless services
-6. **Resilience** — Circuit breakers, retries, graceful degradation
-7. **Developer Experience** — Great docs, SDKs, CLI tools
-8. **User Experience** — Premium UI, responsive, accessible
-
-## Next Steps
-
-- [API Gateway Documentation](./gateway.md)
-- [Service Discovery](./service-discovery.md)
-- [RBAC & SSO System](./../security/rbac-sso.md)
-- [Data Residency & GDPR](./../security/data-residency.md)
-- [Quantum Cryptography](./../security/quantum-crypto.md)
+- [API Gateway](./gateway.md)
+- [Services Documentation](../services/)
+- [Security & RBAC](../security/)
+- [Deployment](../deployment/)
