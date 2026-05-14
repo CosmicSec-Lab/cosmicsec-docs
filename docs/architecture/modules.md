@@ -42,7 +42,7 @@ class DefensiveAI:
 ---
 
 ### 3. FeatureFlagManager (59 edges)
-**Module**: `cosmicsec-core/common/feature_flags.py`
+**Module**: `cosmicsec-core/cosmicsec_platform/common/feature_flags.py`
 
 Enterprise feature flag system with targeting:
 ```python
@@ -59,7 +59,7 @@ class FeatureFlagManager:
 ---
 
 ### 4. LoginRateLimiter (48 edges)
-**Module**: `cosmicsec-services/src/services/auth_service/rate_limiter.py`
+**Module**: `cosmicsec-core/cosmicsec_platform/common/rate_limiting.py`
 
 Security-focused rate limiting for authentication:
 ```python
@@ -127,7 +127,7 @@ class OpenAIProvider(BaseLLMProvider):
 ---
 
 ### 9. UserModel (43 edges)
-**Module**: `cosmicsec-services/src/common/models.py`
+**Module**: `cosmicsec-core/cosmicsec_platform/common/models.py`
 
 Core user model with RBAC support:
 ```python
